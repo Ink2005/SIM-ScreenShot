@@ -1,0 +1,21 @@
+<?php
+require_once __DIR__ . '/includes/bootstrap.php';require_login('persuratan');
+$pdo=db();$kind=($_GET['jenis']??'masuk')==='keluar'?'keluar':'masuk';$q=trim((string)($_GET['q']??''));$kategori=trim((string)($_GET['kategori']??''));
+$incoming=(int)$pdo->query("SELECT COUNT(*) FROM surat WHERE LOWER(jenis)='masuk'")->fetchColumn();$outgoing=(int)$pdo->query("SELECT COUNT(*) FROM surat WHERE LOWER(jenis)='keluar'")->fetchColumn();
+$where=["LOWER(s.jenis)=?"];$params=[$kind];
+if($q!==''){$where[]="(s.nomor_surat LIKE ? OR s.perihal LIKE ? OR s.pengirim_tujuan LIKE ?)";array_push($params,"%$q%","%$q%","%$q%");}
+if($kategori!==''){$where[]="s.jenis_surat=?";$params[]=$kategori;}
+$st=$pdo->prepare("SELECT s.*,p.nama pencatat FROM surat s LEFT JOIN pengguna p ON p.id_pengguna=s.id_pengguna WHERE ".implode(' AND ',$where)." ORDER BY s.tanggal DESC,s.id_surat DESC");$st->execute($params);$letters=$st->fetchAll();
+$pageTitle='Persuratan';$activeMenu='persuratan';include __DIR__.'/includes/header.php';
+?>
+<div class="page-heading"><div><span class="eyebrow">ARSIP DIGITAL</span><h1>Manajemen Persuratan</h1><p>Kelola dan arsipkan surat organisasi dalam satu tempat.</p></div><a class="btn btn-primary" href="<?= e(url('surat_form.php?jenis='.$kind)) ?>">＋ Tambah Surat <?= $kind==='masuk'?'Masuk':'Keluar' ?></a></div>
+<div class="stats-grid stats-three"><article class="stat-card"><span>Total Surat</span><strong><?= $incoming+$outgoing ?></strong><small>Seluruh dokumen tercatat</small></article><article class="stat-card"><span>Total Surat Masuk</span><strong><?= $incoming ?></strong><small>Surat dari pihak eksternal</small></article><article class="stat-card"><span>Total Surat Keluar</span><strong><?= $outgoing ?></strong><small>Surat yang diterbitkan organisasi</small></article></div>
+<section class="panel">
+<div class="tabs"><a class="<?= $kind==='masuk'?'active':'' ?>" href="<?= e(url('persuratan.php?jenis=masuk')) ?>">Surat Masuk <span><?= $incoming ?></span></a><a class="<?= $kind==='keluar'?'active':'' ?>" href="<?= e(url('persuratan.php?jenis=keluar')) ?>">Surat Keluar <span><?= $outgoing ?></span></a></div>
+<form class="filter-bar" method="get"><input type="hidden" name="jenis" value="<?= e($kind) ?>"><input class="search-input" type="search" name="q" value="<?= e($q) ?>" placeholder="⌕ Cari nomor, perihal, atau <?= $kind==='masuk'?'pengirim':'tujuan' ?>..."><select name="kategori"><option value="">Semua Jenis Surat</option><?php foreach(['Pemberitahuan','Permohonan','Keputusan','Persetujuan','Laporan','Permintaan','Lainnya'] as $c): ?><option value="<?= e($c) ?>" <?= $kategori===$c?'selected':'' ?>><?= e($c) ?></option><?php endforeach; ?></select><button class="btn btn-outline">Cari</button><a class="btn btn-ghost" href="<?= e(url('persuratan.php?jenis='.$kind)) ?>">Reset</a></form>
+<div class="table-wrap"><table><thead><tr><th>Nomor Surat</th><th>Tanggal Surat</th><th><?= $kind==='masuk'?'Asal Surat':'Tujuan Surat' ?></th><th>Perihal</th><th>Jenis Surat</th><th>Status</th><th>Aksi</th></tr></thead><tbody>
+<?php if(!$letters): ?><tr><td colspan="7"><div class="empty-state"><strong>Belum ada surat <?= $kind ?></strong><span>Tambahkan dokumen surat untuk mulai membangun arsip digital organisasi.</span></div></td></tr>
+<?php else: foreach($letters as $s): ?><tr><td class="mono"><strong><?= e($s['nomor_surat']) ?></strong></td><td><?= e(tanggal_id($s['tanggal'])) ?></td><td><?= e($s['pengirim_tujuan']) ?></td><td><?= e($s['perihal']) ?></td><td><?= e($s['jenis_surat']??'-') ?></td><td><?= status_badge($s['status']??'Diarsipkan') ?></td><td><div class="action-links"><a href="<?= e(url('surat_detail.php?id='.$s['id_surat'])) ?>">Lihat</a><a href="<?= e(url('surat_form.php?id='.$s['id_surat'])) ?>">Edit</a><form method="post" action="<?= e(url('surat_delete.php')) ?>" onsubmit="return confirm('Hapus surat ini?')"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int)$s['id_surat'] ?>"><button class="link-danger">Hapus</button></form></div></td></tr><?php endforeach; endif; ?>
+</tbody></table></div><div class="table-footer"><span><?= count($letters) ?> surat ditampilkan</span><span class="muted small">Dokumen PDF maksimal 10 MB.</span></div>
+</section>
+<?php include __DIR__.'/includes/footer.php'; ?>

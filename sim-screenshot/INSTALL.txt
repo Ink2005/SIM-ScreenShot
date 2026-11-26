@@ -1,0 +1,111 @@
+PANDUAN CEPAT INSTALASI
+
+1. Ekstrak ZIP ke C:\xampp\htdocs\sim-screenshot
+2. Jalankan Apache dan MySQL dari XAMPP.
+3. Buka http://localhost/phpmyadmin
+4. Import database/db_organisasi.sql
+5. Import database/upgrade.sql
+6. (Opsional) Import database/demo-data.sql
+7. Buka http://localhost/sim-screenshot/
+
+LOGIN DEMO
+Username: admin
+Password: Screenshot26
+
+Jika MySQL memakai password root, ubah DB_PASS di config/database.php.
+
+
+PEMBARUAN VERSI ANIMASI RICH
+- Untuk instalasi lama, cukup timpa file aplikasi dari paket update-only.
+- Jangan import ulang database SQL pada instalasi yang sudah berisi data.
+- Backup folder proyek dan database sebelum pembaruan.
+- Setelah update, tekan Ctrl + F5 pada browser.
+
+
+PEMBARUAN GLASSMORPHISM RICH v0.4
+- Backup folder proyek dan database sebelum pembaruan.
+- Untuk instalasi yang sudah memiliki data, gunakan paket update-only.
+- Timpa file sesuai struktur folder.
+- Jangan import ulang file SQL.
+- Setelah pembaruan, tekan Ctrl + F5.
+
+
+PENYESUAIAN LOGO v0.4.2
+- Background gelap = logo putih.
+- Background terang/putih = logo hitam.
+- Jika logo belum berubah, lakukan Ctrl + F5.
+
+
+LOGO TRANSPARAN v0.4.3
+- Logo pada latar gelap menggunakan file logo putih transparan.
+- Logo pada latar terang menggunakan file logo hitam transparan.
+- Kedua file logo baru sudah disertakan dalam update.
+- Tekan Ctrl + F5 setelah pemasangan.
+
+
+ANIMASI MASUK HALAMAN v0.4.4
+- Update menambahkan fade-in + soft-focus blur bertahap pada elemen halaman.
+- Animasi Rich yang sudah ada tetap dipertahankan.
+- Untuk instalasi lama, gunakan paket update-only.
+- Jangan import ulang database SQL.
+- Tekan Ctrl + F5 setelah update.
+
+
+PENYEMPURNAAN ANIMASI MASUK v0.4.5
+- Efek blur saat elemen masuk dihapus.
+- Fade-in, gerakan naik ringan, dan stagger tetap dipertahankan.
+- Gunakan paket update-only untuk instalasi yang sudah berjalan.
+- Tidak perlu import ulang database.
+- Tekan Ctrl + F5 setelah pembaruan.
+
+
+ANIMASI MASUK PANEL v0.4.6
+- Panel dan kartu sekarang memiliki animasi masuk khusus yang lebih terlihat.
+- Tidak menggunakan blur.
+- Fade-in, gerakan naik, scale ringan, dan stagger tetap aktif.
+- Gunakan paket update-only untuk instalasi yang sudah berjalan.
+- Jangan import ulang database.
+- Tekan Ctrl + F5 setelah update.
+
+
+DEKORASI ANIMASI SIDEBAR v0.4.7
+- Menambahkan garis meliuk merah, putih, biru, dan kuning di belakang menu sidebar.
+- Garis bergerak perlahan dengan fase berbeda.
+- Tidak menghalangi klik menu dan tidak mengubah fungsi sidebar.
+- Gunakan paket update-only untuk instalasi yang sudah berjalan.
+- Jangan import ulang database.
+- Tekan Ctrl + F5 setelah update.
+
+
+ANIMASI LOGIN v0.4.8
+- Garis animasi merah, putih, biru, dan kuning kini juga tampil di panel gelap halaman login.
+- Intensitas dibuat lebih rendah daripada sidebar untuk menjaga keterbacaan.
+- Login, autentikasi, dan database tidak diubah.
+- Gunakan paket update-only dan tekan Ctrl + F5 setelah pemasangan.
+
+
+LOGIN SUCCESS BRAND REVEAL v0.4.9
+- Login sukses sekarang menampilkan animasi logo SCREENSHOT sebelum dashboard.
+- Logo menggunakan efek 3D pop-up/emboss, garis energi merah/biru/kuning/putih, sapaan, dan progress bar.
+- Durasi sekitar 2.35 detik; tersedia tautan untuk melewati animasi.
+- Tidak perlu import ulang database.
+- File update: index.php, welcome.php, README.md, INSTALL.txt.
+- Tekan Ctrl + F5 setelah pemasangan.
+
+
+PENYESUAIAN DURASI BRAND REVEAL v0.5.0
+- Durasi animasi setelah login berhasil diperpanjang dari sekitar 2,35 detik menjadi 5 detik.
+- Progress bar disesuaikan dengan durasi baru.
+- Tautan "Lewati animasi" tetap aktif.
+- Tidak perlu import ulang database.
+- File utama yang diperbarui: welcome.php.
+
+
+LOGOUT BRAND REVEAL v0.5.1
+- Tombol Keluar kini mengirim POST dengan CSRF.
+- Session dan cookie autentikasi dihancurkan sebelum animasi ditampilkan.
+- Logo 3D dan garis energi merah/biru/kuning/putih tampil sekitar 5 detik.
+- Tersedia tautan untuk langsung kembali ke halaman login.
+- Tidak perlu import ulang database.
+- File update: includes/header.php, assets/css/app.css, logout.php, README.md, INSTALL.txt.
+- Tekan Ctrl + F5 setelah pemasangan.
